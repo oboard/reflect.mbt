@@ -1,0 +1,15 @@
+{
+  "name": "oboard/reflect",
+  "version": "0.1.0",
+  "deps": {
+    "moonbitlang/parser": "0.1.11"
+  },
+  "readme": "README.mbt.md",
+  "repository": "https://github.com/oboard/reflect.mbt",
+  "license": "Apache-2.0",
+  "keywords": [
+    "reflect"
+  ],
+  "description": "A library for reflecting on MoonBit types",
+  "source": "src"
+}

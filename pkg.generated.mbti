@@ -1,0 +1,31 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "oboard/reflect"
+
+import(
+  "moonbitlang/core/json"
+)
+
+// Values
+fn[T : Reflecter] type_of(T) -> ReflectType
+
+// Errors
+
+// Types and methods
+pub(all) enum ReflectType {
+  Struct(name~ : String, fields~ : Array[ReflectType])
+  Int(name~ : String, value~ : Int)
+  String(name~ : String, value~ : String)
+}
+impl Eq for ReflectType
+impl Hash for ReflectType
+impl Show for ReflectType
+impl ToJson for ReflectType
+impl @json.FromJson for ReflectType
+
+// Type aliases
+
+// Traits
+pub(open) trait Reflecter {
+  get_type(Self) -> ReflectType
+}
+
