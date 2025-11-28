@@ -5,37 +5,47 @@ fn parse_entities_from_ast(
   ast : @moonbitlang/core/list.List[@moonbitlang/parser/syntax.Impl],
 ) -> Array[StructSpec] {
   let specs : Map[String, StructSpec] = {}
-  ast.each(item => if item is @syntax.Impl::TopTypeDef(type_decl) {
-    if type_decl is { tycon: name, components: Record(params), .. } {
-      let fields : Array[FieldSpec] = []
-      params.each(param => if param is { name: { label, .. }, ty, attrs, .. } {
-        fields.push({
-          label,
-          field_type: match ty {
-            Name(constr_id={ id: Ident(name~) | Dot(id=name, ..), .. }, ..) =>
-              name
-            Option(
-              ty=Name(constr_id={ id: Ident(name~) | Dot(id=name, ..), .. }, ..),
-              ..
-            ) => name
-            _ => "String"
-          },
-          attrs: attrs.map(attr => attr.raw).to_array(),
-        })
+  ast.each(item => if item
+    is @syntax.Impl::TopTypeDef(
+      { tycon: name, components: Record(params), attrs, .. }
+    ) {
+    let fields : Array[FieldSpec] = []
+    params.each(param => if param is { name: { label, .. }, ty, attrs, .. } {
+      fields.push({
+        label,
+        field_type: match ty {
+          Name(constr_id={ id: Ident(name~) | Dot(id=name, ..), .. }, ..) =>
+            name
+          Option(
+            ty=Name(constr_id={ id: Ident(name~) | Dot(id=name, ..), .. }, ..),
+            ..
+          ) => name
+          _ => "String"
+        },
+        attrs: attrs.map(attr => attr.raw).to_array(),
       })
-      specs.set(name, { name, fields, methods: [] })
-    }
+    })
+    specs.set(name, {
+      name,
+      fields,
+      methods: [],
+      attrs: attrs.map(attr => attr.raw).to_array(),
+    })
   })
   ast.each(item => if item
     is @syntax.Impl::TopFuncDef(
       fun_decl={
         type_name: Some({ name: Ident(name=ty) | Dot(id=ty, ..), .. }),
         name: { name, .. },
+        attrs,
         ..,
       },
       ..
     ) {
-    specs[ty].methods.push({ name, })
+    specs[ty].methods.push({
+      name,
+      attrs: attrs.map(attr => attr.raw).to_array(),
+    })
   })
   specs.values().to_array()
 }

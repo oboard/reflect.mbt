@@ -1,7 +1,7 @@
 ///|
 pub impl Reflecter for MyStruct1 with _get_type(self) -> @oboard/reflect.ReflectType {
   Struct(
-    name="MyStruct",
+    name="MyStruct1",
     fields=[
       Int(name="field1", value=self.field1),
       String(name="field2", value=self.field2),

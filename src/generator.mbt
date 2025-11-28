@@ -9,6 +9,7 @@ struct FieldSpec {
 ///|
 struct MethodSpec {
   name : String
+  attrs : Array[String]
 } derive(Show, ToJson)
 
 ///|
@@ -16,29 +17,13 @@ struct StructSpec {
   name : String
   fields : Array[FieldSpec]
   methods : Array[MethodSpec]
+  attrs : Array[String]
 } derive(Show, ToJson)
-
-///|
-fn normalize_struct_name(name : String) -> StringView {
-  match name {
-    [.. base, '0'] => base
-    [.. base, '1'] => base
-    [.. base, '2'] => base
-    [.. base, '3'] => base
-    [.. base, '4'] => base
-    [.. base, '5'] => base
-    [.. base, '6'] => base
-    [.. base, '7'] => base
-    [.. base, '8'] => base
-    [.. base, '9'] => base
-    _ => name
-  }
-}
 
 ///|
 fn generate_impl(spec : StructSpec) -> String {
   let struct_name = spec.name
-  let display_name = normalize_struct_name(spec.name)
+  let display_name = struct_name
   let lines : StringBuilder = StringBuilder::new()
   lines.write_string("///|\n")
   lines.write_string(

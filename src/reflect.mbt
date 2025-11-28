@@ -14,6 +14,11 @@ pub(all) enum ReflectType {
   Int(name~ : String, value~ : Int)
   String(name~ : String, value~ : String)
   Double(name~ : String, value~ : Double)
+  Bool(name~ : String, value~ : Bool)
+  Float(name~ : String, value~ : Float)
+  Int64(name~ : String, value~ : Int64)
+  BigInt(name~ : String, value~ : BigInt)
+  Unit(name~ : String)
   Function(name~ : String)
 } derive(Show, Eq, Hash, ToJson, FromJson)
 
