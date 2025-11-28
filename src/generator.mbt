@@ -3,13 +3,13 @@
 struct FieldSpec {
   label : String
   field_type : String
-  attrs : Array[String]
+  attrs : Array[ReflectAttribute]
 } derive(Show, ToJson)
 
 ///|
 struct MethodSpec {
   name : String
-  attrs : Array[String]
+  attrs : Array[ReflectAttribute]
 } derive(Show, ToJson)
 
 ///|
@@ -17,14 +17,14 @@ struct StructSpec {
   name : String
   fields : Array[FieldSpec]
   methods : Array[MethodSpec]
-  attrs : Array[String]
+  attrs : Array[ReflectAttribute]
 } derive(Show, ToJson)
 
 ///|
 fn generate_impl(spec : StructSpec) -> String {
   let struct_name = spec.name
-  let display_name = struct_name
-  let lines : StringBuilder = StringBuilder::new()
+  let display_name = spec.name
+  let lines = StringBuilder::new()
   lines.write_string("///|\n")
   lines.write_string(
     "pub impl Reflecter for \{struct_name} with _get_type(self) -> @oboard/reflect.ReflectType {\n",
@@ -32,26 +32,27 @@ fn generate_impl(spec : StructSpec) -> String {
   lines.write_string("  Struct(name=\"\{display_name}\",\n")
   lines.write_string("    fields=[\n")
   spec.fields.each(field => lines.write_string(
-    "    \{field.field_type}(name=\"\{field.label}\", value=self.\{field.label}),\n",
+    "    \{field.field_type}(name=\"\{field.label}\", value=self.\{field.label}, attrs=\{field.attrs}),\n",
   ))
   lines.write_string("    ],\n")
   lines.write_string("    methods=[\n")
   if spec.methods.length() > 0 {
     spec.methods.each(m => lines.write_string(
-      "      Function(name=\"\{m.name}\"),\n",
+      "      Function(name=\"\{m.name}\", attrs=\{m.attrs}),\n",
     ))
   }
   lines.write_string("    ],\n")
+  lines.write_string("    attrs=\{spec.attrs},\n")
   lines.write_string("  )\n")
   lines.write_string("}\n")
   lines.write_string("\n")
   lines.write_string("///|\n")
   lines.write_string(
-    "pub impl Reflecter for \{struct_name} with _get(self, name) -> @oboard/reflect.ReflectType? {\n",
+    "pub impl Reflecter for \{struct_name} with _get_property(self, name) -> @oboard/reflect.ReflectType? {\n",
   )
   lines.write_string("  match name {\n")
   spec.fields.each(field => lines.write_string(
-    "    \"\{field.label}\" => Some(\{field.field_type}(name=\"\{field.label}\", value=self.\{field.label}))\n",
+    "    \"\{field.label}\" => Some(\{field.field_type}(name=\"\{field.label}\", value=self.\{field.label}, attrs=\{field.attrs}))\n",
   ))
   lines.write_string("    _ => None\n")
   lines.write_string("  }\n")

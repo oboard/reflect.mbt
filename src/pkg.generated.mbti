@@ -3,7 +3,6 @@ package "oboard/reflect"
 
 import(
   "moonbitlang/core/bigint"
-  "moonbitlang/core/json"
 )
 
 // Values
@@ -22,23 +21,30 @@ type MethodSpec
 impl Show for MethodSpec
 impl ToJson for MethodSpec
 
+pub(all) struct ReflectAttribute {
+  id : StringView
+  name : StringView
+  params : Map[StringView, StringView]
+}
+impl Eq for ReflectAttribute
+impl Show for ReflectAttribute
+impl ToJson for ReflectAttribute
+
 pub(all) enum ReflectType {
-  Struct(name~ : String, fields~ : Array[ReflectType], methods~ : Array[ReflectType])
-  Int(name~ : String, value~ : Int)
-  String(name~ : String, value~ : String)
-  Double(name~ : String, value~ : Double)
-  Bool(name~ : String, value~ : Bool)
-  Float(name~ : String, value~ : Float)
-  Int64(name~ : String, value~ : Int64)
-  BigInt(name~ : String, value~ : @bigint.BigInt)
-  Unit(name~ : String)
-  Function(name~ : String)
+  Struct(name~ : String, fields~ : Array[ReflectType], methods~ : Array[ReflectType], attrs~ : Array[ReflectAttribute])
+  Int(name~ : String, value~ : Int, attrs~ : Array[ReflectAttribute])
+  String(name~ : String, value~ : String, attrs~ : Array[ReflectAttribute])
+  Double(name~ : String, value~ : Double, attrs~ : Array[ReflectAttribute])
+  Bool(name~ : String, value~ : Bool, attrs~ : Array[ReflectAttribute])
+  Float(name~ : String, value~ : Float, attrs~ : Array[ReflectAttribute])
+  Int64(name~ : String, value~ : Int64, attrs~ : Array[ReflectAttribute])
+  BigInt(name~ : String, value~ : @bigint.BigInt, attrs~ : Array[ReflectAttribute])
+  Unit(name~ : String, attrs~ : Array[ReflectAttribute])
+  Function(name~ : String, attrs~ : Array[ReflectAttribute])
 }
 impl Eq for ReflectType
-impl Hash for ReflectType
 impl Show for ReflectType
 impl ToJson for ReflectType
-impl @json.FromJson for ReflectType
 
 type StructSpec
 impl Show for StructSpec
@@ -51,6 +57,6 @@ pub type Value
 // Traits
 pub(open) trait Reflecter {
   _get_type(Self) -> ReflectType
-  _get(Self, String) -> ReflectType?
+  _get_property(Self, String) -> ReflectType?
 }
 
