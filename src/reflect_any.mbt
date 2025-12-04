@@ -32,8 +32,3 @@ pub impl Reflect for @any.Any with variant(_) {
 pub impl Reflect for @any.Any with index(_, _) {
   None
 }
-
-///|
-pub impl Reflect for @any.Any with as_any(self) {
-  self
-}

@@ -41,3 +41,10 @@ test "struct" {
   // Test iteration
   assert_eq(struct1.fields().to_array().length(), 3)
 }
+
+///|
+test "set field" {
+  let struct1 = MyStruct1::{ field1: 1, field2: "hello", field3: Some(3.14) }
+  @reflect.set_field(struct1, "field1", @any.of(2))
+  assert_eq(struct1.field1, 2)
+}

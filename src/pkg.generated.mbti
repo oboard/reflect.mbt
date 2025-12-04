@@ -9,6 +9,8 @@ import(
 // Values
 pub fn[T : Reflect] get_field(T, String) -> @any.Any?
 
+pub fn set_field(&Reflect, String, @any.Any) -> Unit
+
 pub fn[T : Reflect] type_of(T) -> @any.TypeInfo
 
 // Errors
@@ -59,7 +61,6 @@ pub(open) trait Reflect {
   fields(Self) -> Iter2[String, @any.Any]
   variant(Self) -> (String, Array[@any.Any])?
   index(Self, Int) -> @any.Any?
-  as_any(Self) -> @any.Any
 }
 pub impl Reflect for Unit
 pub impl Reflect for Bool

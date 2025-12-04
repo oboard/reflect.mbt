@@ -13,7 +13,6 @@ pub(open) trait Reflect {
   fields(Self) -> Iter2[String, Any]
   variant(Self) -> (String, Array[Any])?
   index(Self, Int) -> Any?
-  as_any(Self) -> Any
 }
 
 ///|
@@ -73,11 +72,6 @@ pub impl Reflect for Int with index(_, _) {
 }
 
 ///|
-pub impl Reflect for Int with as_any(self) {
-  @any.Any::of(self)
-}
-
-///|
 pub impl Reflect for String with type_info(self) {
   @any.Any::of(self).type_info()
 }
@@ -110,11 +104,6 @@ pub impl Reflect for String with variant(_) {
 ///|
 pub impl Reflect for String with index(_, _) {
   None
-}
-
-///|
-pub impl Reflect for String with as_any(self) {
-  @any.Any::of(self)
 }
 
 ///|
@@ -153,11 +142,6 @@ pub impl Reflect for Double with index(_, _) {
 }
 
 ///|
-pub impl Reflect for Double with as_any(self) {
-  @any.Any::of(self)
-}
-
-///|
 pub impl Reflect for Bool with type_info(self) {
   @any.Any::of(self).type_info()
 }
@@ -190,11 +174,6 @@ pub impl Reflect for Bool with variant(_) {
 ///|
 pub impl Reflect for Bool with index(_, _) {
   None
-}
-
-///|
-pub impl Reflect for Bool with as_any(self) {
-  @any.Any::of(self)
 }
 
 ///|
@@ -233,11 +212,6 @@ pub impl Reflect for Int64 with index(_, _) {
 }
 
 ///|
-pub impl Reflect for Int64 with as_any(self) {
-  @any.Any::of(self)
-}
-
-///|
 pub impl Reflect for BigInt with type_info(self) {
   @any.Any::of(self).type_info()
 }
@@ -270,11 +244,6 @@ pub impl Reflect for BigInt with variant(_) {
 ///|
 pub impl Reflect for BigInt with index(_, _) {
   None
-}
-
-///|
-pub impl Reflect for BigInt with as_any(self) {
-  @any.Any::of(self)
 }
 
 ///|
@@ -313,11 +282,6 @@ pub impl Reflect for Json with index(_, _) {
 }
 
 ///|
-pub impl Reflect for Json with as_any(self) {
-  @any.Any::of(self)
-}
-
-///|
 pub impl Reflect for Unit with type_info(self) {
   @any.Any::of(self).type_info()
 }
@@ -350,11 +314,6 @@ pub impl Reflect for Unit with variant(_) {
 ///|
 pub impl Reflect for Unit with index(_, _) {
   None
-}
-
-///|
-pub impl Reflect for Unit with as_any(self) {
-  @any.Any::of(self)
 }
 
 ///|
@@ -397,11 +356,6 @@ pub impl[T] Reflect for Array[T] with index(self, idx) {
 }
 
 ///|
-pub impl[T] Reflect for Array[T] with as_any(self) {
-  @any.Any::of(self)
-}
-
-///|
 pub impl[T] Reflect for T? with type_info(self) {
   @any.Any::of(self).type_info()
 }
@@ -440,11 +394,6 @@ pub impl[T] Reflect for T? with index(_, _) {
 }
 
 ///|
-pub impl[T] Reflect for T? with as_any(self) {
-  @any.Any::of(self)
-}
-
-///|
 pub impl[T, E] Reflect for Result[T, E] with type_info(self) {
   @any.Any::of(self).type_info()
 }
@@ -480,9 +429,4 @@ pub impl[T, E] Reflect for Result[T, E] with variant(self) {
 ///|
 pub impl[T, E] Reflect for Result[T, E] with index(_, _) {
   None
-}
-
-///|
-pub impl[T, E] Reflect for Result[T, E] with as_any(self) {
-  @any.Any::of(self)
 }

@@ -86,13 +86,6 @@ fn generate_impl(spec : StructSpec) -> String {
   )
   lines.write_string("  None\n")
   lines.write_string("}\n\n")
-
-  // as_any
-  lines.write_string(
-    "pub impl @reflect.Reflect for \{struct_name} with as_any(self) {\n",
-  )
-  lines.write_string("  @any.Any::of(self)\n")
-  lines.write_string("}\n")
   lines.to_string()
 }
 

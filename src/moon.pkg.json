@@ -10,5 +10,10 @@
     "moonbitlang/parser/syntax",
     "moonbitlang/parser/attribute",
     "tonyfettes/any"
-  ]
+  ],
+  "targets": {
+    "reflect.js.mbt": [
+      "js"
+    ]
+  }
 }

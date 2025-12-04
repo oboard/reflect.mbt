@@ -51,8 +51,3 @@ pub impl @reflect.Reflect for MyStruct1 with variant(_) {
 pub impl @reflect.Reflect for MyStruct1 with index(_, _) {
   None
 }
-
-///|
-pub impl @reflect.Reflect for MyStruct1 with as_any(self) {
-  @any.Any::of(self)
-}
