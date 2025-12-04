@@ -17,20 +17,8 @@ fn parse_entities_from_ast(
       { tycon: name, components: Record(params), attrs, .. }
     ) {
     let fields : Array[FieldSpec] = []
-    params.each(param => if param is { name: { label, .. }, ty, attrs, .. } {
-      fields.push({
-        label,
-        field_type: match ty {
-          Name(constr_id={ id: Ident(name~) | Dot(id=name, ..), .. }, ..) =>
-            name
-          Option(
-            ty=Name(constr_id={ id: Ident(name~) | Dot(id=name, ..), .. }, ..),
-            ..
-          ) => name
-          _ => "String"
-        },
-        attrs: collect_attributes(attrs),
-      })
+    params.each(param => if param is { name: { label, .. }, attrs, .. } {
+      fields.push({ label, attrs: collect_attributes(attrs) })
     })
     specs.set(name, {
       name,

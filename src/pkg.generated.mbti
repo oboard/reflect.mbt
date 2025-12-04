@@ -3,60 +3,74 @@ package "oboard/reflect"
 
 import(
   "moonbitlang/core/bigint"
+  "tonyfettes/any"
 )
 
 // Values
-fn[T : Reflecter] get(T, String) -> ReflectType?
+pub fn[T : Reflect] get_field(T, String) -> @any.Any?
 
-fn[T : Reflecter] type_of(T) -> ReflectType
+pub fn[T : Reflect] type_of(T) -> @any.TypeInfo
 
 // Errors
 
 // Types and methods
 type FieldSpec
-impl Show for FieldSpec
-impl ToJson for FieldSpec
+pub impl Show for FieldSpec
+pub impl ToJson for FieldSpec
+
+pub(all) enum Kind {
+  Primitive
+  Struct
+  Enum
+  Array
+  Tuple
+  Function
+  Unit
+}
 
 type MethodSpec
-impl Show for MethodSpec
-impl ToJson for MethodSpec
+pub impl Show for MethodSpec
+pub impl ToJson for MethodSpec
 
 pub(all) struct ReflectAttribute {
   id : StringView
   name : StringView
   params : Map[StringView, StringView]
 }
-impl Eq for ReflectAttribute
-impl Show for ReflectAttribute
-impl ToJson for ReflectAttribute
-
-pub(all) enum ReflectType {
-  Struct(name~ : String, fields~ : Array[ReflectType], methods~ : Array[ReflectType], attrs~ : Array[ReflectAttribute])
-  Int(name~ : String, value~ : Int, attrs~ : Array[ReflectAttribute])
-  String(name~ : String, value~ : String, attrs~ : Array[ReflectAttribute])
-  Double(name~ : String, value~ : Double, attrs~ : Array[ReflectAttribute])
-  Bool(name~ : String, value~ : Bool, attrs~ : Array[ReflectAttribute])
-  Float(name~ : String, value~ : Float, attrs~ : Array[ReflectAttribute])
-  Int64(name~ : String, value~ : Int64, attrs~ : Array[ReflectAttribute])
-  BigInt(name~ : String, value~ : @bigint.BigInt, attrs~ : Array[ReflectAttribute])
-  Unit(name~ : String, attrs~ : Array[ReflectAttribute])
-  Function(name~ : String, attrs~ : Array[ReflectAttribute])
-}
-impl Eq for ReflectType
-impl Show for ReflectType
-impl ToJson for ReflectType
+pub impl Eq for ReflectAttribute
+pub impl Show for ReflectAttribute
+pub impl ToJson for ReflectAttribute
 
 type StructSpec
-impl Show for StructSpec
-impl ToJson for StructSpec
-
-pub type Value
+pub impl Show for StructSpec
+pub impl ToJson for StructSpec
 
 // Type aliases
+pub using @any {type Any}
+
+pub using @any {type TypeInfo}
 
 // Traits
-pub(open) trait Reflecter {
-  _get_type(Self) -> ReflectType
-  _get_property(Self, String) -> ReflectType?
+pub(open) trait Reflect {
+  type_info(Self) -> @any.TypeInfo
+  kind(Self) -> Kind
+  attrs(Self) -> Array[ReflectAttribute]
+  field(Self, String) -> @any.Any?
+  fields(Self) -> Iter2[String, @any.Any]
+  variant(Self) -> (String, Array[@any.Any])?
+  index(Self, Int) -> @any.Any?
+  as_any(Self) -> @any.Any
 }
+pub impl Reflect for Unit
+pub impl Reflect for Bool
+pub impl Reflect for Int
+pub impl Reflect for Int64
+pub impl Reflect for Double
+pub impl Reflect for String
+pub impl[T] Reflect for T?
+pub impl[T, E] Reflect for Result[T, E]
+pub impl Reflect for @bigint.BigInt
+pub impl[T] Reflect for Array[T]
+pub impl Reflect for Json
+pub impl Reflect for @any.Any
 

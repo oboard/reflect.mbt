@@ -8,6 +8,7 @@
     "moonbitlang/parser",
     "moonbitlang/x/fs",
     "moonbitlang/parser/syntax",
-    "moonbitlang/parser/attribute"
+    "moonbitlang/parser/attribute",
+    "tonyfettes/any"
   ]
 }
